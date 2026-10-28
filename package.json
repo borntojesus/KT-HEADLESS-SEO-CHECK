@@ -1,0 +1,60 @@
+{
+  "name": "headless-seo-check",
+  "version": "0.1.0",
+  "description": "Technical SEO checks for headless and JavaScript sites: redirects, canonical, hreflang, sitemap, raw HTML without JS, robots.txt AI bot blocks.",
+  "type": "module",
+  "bin": {
+    "headless-seo-check": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "test": "npm run build && node --test test/",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "seo",
+    "technical-seo",
+    "headless",
+    "nextjs",
+    "hreflang",
+    "canonical",
+    "sitemap",
+    "redirects",
+    "ai-crawlers",
+    "cli"
+  ],
+  "author": "Dmytro Antonyuk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/borntojesus/KT-HEADLESS-SEO-CHECK.git"
+  },
+  "homepage": "https://github.com/borntojesus/KT-HEADLESS-SEO-CHECK#readme",
+  "bugs": {
+    "url": "https://github.com/borntojesus/KT-HEADLESS-SEO-CHECK/issues"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.11.2",
+    "node-html-parser": "^9.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  }
+}
