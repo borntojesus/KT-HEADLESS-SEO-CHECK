@@ -132,3 +132,18 @@ test("analyzeHtml finds SPA roots and noindex", () => {
   assert.equal(info.noindexMeta, true);
   assert.deepEqual(info.spaRoots, [{ id: "root", empty: true }]);
 });
+
+test("a non-HTML resource gets no HTML analysis, so HTML checks skip it", async () => {
+  const { loadPage } = await import("../dist/pages.js");
+  const srv = await startServer({
+    "/data": { headers: { "content-type": "application/json" }, body: '{"a":1}' },
+    "/page": { headers: { "content-type": "text/html; charset=utf-8" }, body: "<html><title>x</title><h1>x</h1></html>" },
+  });
+  try {
+    const ctx = await buildContext(makeOptions(srv.url + "/page"), fetcher());
+    assert.equal((await loadPage(ctx, srv.url + "/data")).info, undefined);
+    assert.ok((await loadPage(ctx, srv.url + "/page")).info);
+  } finally {
+    await srv.close();
+  }
+});

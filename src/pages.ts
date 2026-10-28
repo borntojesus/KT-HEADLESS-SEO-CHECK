@@ -252,7 +252,10 @@ export function loadPage(ctx: Context, url: string): Promise<LoadedPage> {
     hit = (async (): Promise<LoadedPage> => {
       const chain = await ctx.fetcher.chain(key);
       const html = chain.final.error ? "" : bodyText(chain.final);
-      const ok = chain.status === 200;
+      // Non-HTML resources (JSON, images) in a sitemap are not pages: skip the HTML checks for them.
+      const type = (chain.final.headers["content-type"] ?? "").toLowerCase();
+      const isHtml = type === "" || type.includes("html");
+      const ok = chain.status === 200 && isHtml;
       const info = ok ? analyzeHtml(html, chain.finalUrl) : undefined;
       return {
         summary: {

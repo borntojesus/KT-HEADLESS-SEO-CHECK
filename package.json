@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json && chmod +x dist/cli.js",
-    "test": "npm run build && node --test test/",
+    "test": "npm run build && node --test \"test/*.test.js\"",
     "prepublishOnly": "npm test"
   },
   "keywords": [
