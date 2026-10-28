@@ -1,10 +1,15 @@
-# Deploy — KT-HEADLESS-SEO-CHECK
+# Deploy: KT-HEADLESS-SEO-CHECK
 
-- **Target:** {{homelab (Coolify CT 210 / Caddy CT 213 / LXC) | Vercel (client-prod, prebuilt only) | Netlify (legacy)}}
-- **URL:** TODO
-- **Build:** `{{pnpm build}}`
-- **Deploy command / trigger:** {{GHA workflow file | vercel deploy --prebuilt | coolify webhook}}
-- **Env:** {{where secrets live: GH Actions secrets / Coolify env / 1Password item}}
-- **DNS / tunnel:** {{CF zone + record, tunnel ingress if homelab}}
+- **Target:** npm registry. Nothing is hosted: no server, no container, no DNS.
+- **URL:** https://www.npmjs.com/package/headless-seo-check and https://github.com/borntojesus/KT-HEADLESS-SEO-CHECK (public)
+- **Build:** `npm run build` (runs inside `npm test` and `prepublishOnly`)
+- **Release:** manual, from the Mac, by Dmytro:
+  1. `npm test` (offline, must be green)
+  2. bump `version` in `package.json`, commit, `git tag vX.Y.Z`
+  3. `npm publish` (the `prepublishOnly` script runs the tests again; `files` ships only `dist`, README, LICENSE)
+  4. `git push origin main --tags`
+- **First release:** create the public GitHub repo `borntojesus/KT-HEADLESS-SEO-CHECK` (gh user `borntojesus`), add `origin`, push. No remote is configured yet.
+- **Env / secrets:** npm login on the Mac (`npm login`); store the npm token in 1Password before using it. No CI secrets, no GitHub Actions publish.
+- **Verify after publish:** `npx headless-seo-check@latest --version` and one run against a real site.
 
-> Rules: build locally or in GHA — NEVER remote Vercel builds. Push only at task end.
+> Rules: build locally, never push before the end of the task.
